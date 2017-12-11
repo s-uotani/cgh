@@ -51,6 +51,7 @@ typedef struct tagRGBQUAD{
 /*--------------------フレネル近似のカーネル関数--------------------*/
 __global__ void fresnel_gpu(int *x_d, int *y_d, float *z_d, float *lumi_intensity_d){
     int i, j, k;
+	int adr;
 	float xx, yy;
 
     j = blockDim.x*blockIdx.x+threadIdx.x;	//widthのループの置き換え
@@ -196,12 +197,12 @@ int main(){
 /*--------------------------------------------------*/
 
 
-	fp = fopen("fresnel-2gpu.bmp","wb");	//宣言したfpと使用するファイル名，その読み書きモードを設定．バイナリ(b)で書き込み(w)
+	fp = fopen("fresnel-gpu.bmp","wb");	//宣言したfpと使用するファイル名，その読み書きモードを設定．バイナリ(b)で書き込み(w)
 	fwrite(&bmpFh, sizeof(bmpFh), 1, fp);	//書き込むデータのアドレス，データのサイズ，データの個数，ファイルのポインタを指定
 	fwrite(&bmpIh, sizeof(bmpIh), 1, fp);	//(&bmpFh.bfType, sizeof(bmpFh.bfType), 1, fp);というように個別に書くことも可能
 	fwrite(&rgbQ[0], sizeof(rgbQ[0]), 256, fp);
 	fwrite(img, sizeof(unsigned char), pixel, fp);	//bmpに書き込み
-	printf("'fresnel-2gpu.bmp' was saved.\n\n");
+	printf("'fresnel-gpu.bmp' was saved.\n\n");
 	fclose(fp);
 
 	return 0;
